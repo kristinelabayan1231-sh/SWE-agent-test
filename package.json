@@ -1,0 +1,12 @@
+{
+  "name": "swe-agent-test",
+  "version": "1.0.0",
+  "description": "Dummy app used to test an AI SWE agent's ability to find and fix a real bug.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

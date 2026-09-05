@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sales Report</title>
+</head>
+<body>
+  <h1>Sales Report</h1>
+  <table id="orders-table" border="1" cellpadding="6">
+    <thead>
+      <tr><th>Product</th><th>Price</th><th>Qty</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <h2>Total Revenue: <span id="total-revenue">-</span></h2>
+
+  <script>
+    fetch('/api/sales/summary')
+      .then((r) => r.json())
+      .then((data) => {
+        const tbody = document.querySelector('#orders-table tbody');
+        data.orders.forEach((o) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td>${o.product}</td><td>$${o.price.toFixed(2)}</td><td>${o.quantity}</td>`;
+          tbody.appendChild(row);
+        });
+        document.getElementById('total-revenue').textContent = `$${data.totalRevenue.toFixed(2)}`;
+      });
+  </script>
+</body>
+</html>
