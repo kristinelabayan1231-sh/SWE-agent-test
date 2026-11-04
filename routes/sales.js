@@ -9,7 +9,7 @@ const ORDERS = [
 ];
 
 function calculateTotalRevenue(orders) {
-  return orders.reduce((sum, order) => sum + order.price, 0);
+  return orders.reduce((sum, order) => sum + order.price * order.quantity, 0);
 }
 
 router.get('/summary', (req, res) => {
