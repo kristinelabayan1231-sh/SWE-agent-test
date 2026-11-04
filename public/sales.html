@@ -13,10 +13,16 @@
     <tbody></tbody>
   </table>
   <h2>Total Revenue: <span id="total-revenue">-</span></h2>
+  <h2>Average Order Value: <span id="average-order-value">-</span></h2>
 
   <script>
     fetch('/api/sales/summary')
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) {
+          throw new Error(`Request failed: ${r.status}`);
+        }
+        return r.json();
+      })
       .then((data) => {
         const tbody = document.querySelector('#orders-table tbody');
         data.orders.forEach((o) => {
@@ -25,6 +31,14 @@
           tbody.appendChild(row);
         });
         document.getElementById('total-revenue').textContent = `$${data.totalRevenue.toFixed(2)}`;
+        // typeof check so a value of 0 shows $0.00 instead of being skipped.
+        if (typeof data.averageOrderValue === 'number') {
+          document.getElementById('average-order-value').textContent = `$${data.averageOrderValue.toFixed(2)}`;
+        }
+      })
+      .catch(() => {
+        document.getElementById('total-revenue').textContent = 'Unavailable';
+        document.getElementById('average-order-value').textContent = 'Unavailable';
       });
   </script>
 </body>
