@@ -12,11 +12,24 @@ function calculateTotalRevenue(orders) {
   return orders.reduce((sum, order) => sum + order.price * order.quantity, 0);
 }
 
+function calculateAverageOrderValue(orders) {
+  if (orders.length === 0) {
+    return 0;
+  }
+
+  const average = calculateTotalRevenue(orders) / orders.length;
+
+  // EPSILON stops values like 1.005 (stored just under) from rounding down.
+  return Math.round((average + Number.EPSILON) * 100) / 100;
+}
+
 router.get('/summary', (req, res) => {
   res.json({
     orders: ORDERS,
     totalRevenue: calculateTotalRevenue(ORDERS),
+    averageOrderValue: calculateAverageOrderValue(ORDERS),
   });
 });
 
 module.exports = router;
+module.exports.calculateAverageOrderValue = calculateAverageOrderValue;
